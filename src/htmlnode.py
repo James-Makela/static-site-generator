@@ -29,3 +29,32 @@ class HTMLNode():
         if not self.props or len(self.props) == 0:
             print("No props")
         
+
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, props=None):
+        super().__init__(tag, value, None, props)
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("All Leaf Nodes must have a value")
+        if self.tag is None:
+            return self.value
+        
+        html_string = ""
+
+        if self.props:
+            html_string += f"<{self.tag}{self.props_to_html()}>"
+        else:
+            html_string += f"<{self.tag}>"
+
+        html_string += f"{self.value}</{self.tag}>"
+
+        return html_string
+
+    def __repr__(self):
+        print(f"Tag: {self.tag}")
+        print(f"Value: {self.value}")
+        print(f"Props: ")
+        if not self.props or len(self.props) == 0:
+            print("No props")
+

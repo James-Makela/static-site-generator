@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_htmlnode_is_correct_type(self):
@@ -34,3 +34,21 @@ class TestHTMLNode(unittest.TestCase):
             props=test_props
         )
         self.assertEqual(populated_node.props_to_html(), props_string)
+
+
+class TestLeafNode(unittest.TestCase):
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_to_html_a(self):
+        node = LeafNode(
+            "a",
+            "Google",
+            {"href": "https://www.google.com"}
+        )
+        self.assertEqual(node.to_html(), '<a href="https://www.google.com">Google</a>')
+
+    def test_leaf_to_html_b(self):
+        node = LeafNode("b", "This is some bold text")
+        self.assertEqual(node.to_html(), '<b>This is some bold text</b>')
