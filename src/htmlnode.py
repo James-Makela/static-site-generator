@@ -20,14 +20,26 @@ class HTMLNode():
         return props_string
 
     def __repr__(self):
-        print(f"Tag: {self.tag}")
-        print(f"Value: {self.value}")
-        print(f"Children: ")
+        return f"HTMLNode(Tag: {self.tag}, Value: {self.value}, Children: {self.children}, Props: {self.props})"
+
+    def __str__(self):
+        string = ""
+        string += f"Tag: {self.tag}\n"
+        string +=f"Value: {self.value}\n"
+        string += f"Children: \n"
         if not self.children or len(self.children) == 0:
-            print("No children")
-        print(f"Props: ")
+            string +="No children\n"
+        else:
+            for child in self.children:
+                string += f"\t{child}\n"
+        string += f"Props: \n"
         if not self.props or len(self.props) == 0:
-            print("No props")
+            string += "No props\n"
+        else:
+            for prop in self.props:
+                string += f"\t{prop}: {self.props[prop]}\n"
+
+        return string
         
 
 class LeafNode(HTMLNode):
@@ -52,9 +64,18 @@ class LeafNode(HTMLNode):
         return html_string
 
     def __repr__(self):
-        print(f"Tag: {self.tag}")
-        print(f"Value: {self.value}")
-        print(f"Props: ")
+        return f"HTMLNode(Tag: {self.tag}, Value: {self.value}, Props: {self.props})"
+
+    def __str__(self):
+        string = ""
+        string += f"Tag: {self.tag}\n"
+        string +=f"Value: {self.value}\n"
+        string += f"Props: \n"
         if not self.props or len(self.props) == 0:
-            print("No props")
+            string += "No props\n"
+        else:
+            for prop in self.props:
+                string += f"\t{prop}: {self.props[prop]}\n"
+
+        return string
 
