@@ -1,7 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType
-from parse_functions import split_nodes_delimiter
+from parse_functions import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     # Delimiter type rotated across tests for coverage
@@ -89,3 +89,32 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         node_to_parse = TextNode("some initial text _italic text", TextType.TEXT)
         with self.assertRaises(Exception):
             parsed_nodes = split_nodes_delimiter([node_to_parse], "_", TextType.ITALIC)
+
+
+class TestExtractImagesFromMarkdown(unittest.TestCase):
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png), and another ![image2](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png"), ("image2", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_does_not_extract_normal_links(self):
+        matches = extract_markdown_images(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        )
+        self.assertFalse(matches)
+
+
+class TestExtractLinksFromMarkdown(unittest.TestCase):
+    def test_extract_markdown_link(self):
+        matches = extract_markdown_links(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        )
+        self.assertListEqual([("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")], matches)
+
+    def test_Does_not_extract_images(self):
+        matches = extract_markdown_links(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertFalse(matches)
+
